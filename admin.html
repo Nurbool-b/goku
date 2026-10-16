@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0F0F0F"><meta name="color-scheme" content="dark"><meta name="robots" content="noindex">
+<title>goku eSports — Admin</title>
+<style>
+:root{--bg:#0F0F0F;--card:rgba(32,32,32,.7);--bd:rgba(248,248,248,.1);--tx:#F8F8F8;--mu:#9a9a9a;--brand:#5DD62C;--dg:#337418;--ok:#5DD62C;--busy:#ff4d5e;--bk:#ff9f1c;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}html{background:var(--bg);-webkit-text-size-adjust:100%}
+body{min-height:100vh;background:radial-gradient(700px 400px at 90% -10%,rgba(51,116,24,.45),transparent 70%),var(--bg);color:var(--tx);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow-x:hidden}body.lock{overflow:hidden}
+.hide{display:none!important}.g{color:var(--brand)}.live{color:var(--mu);font-size:.82rem}.bad{color:var(--bk)}
+.glass{background:var(--card);border:1px solid var(--bd);border-radius:18px;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(15,15,15,.85);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-bottom:1px solid var(--bd)}
+.nav{max-width:1120px;margin:auto;padding:10px 16px;display:flex;align-items:center;gap:10px}.logo{font-weight:800;letter-spacing:.03em;white-space:nowrap}.logo b{color:var(--brand)}
+.lang{display:flex;border:1px solid var(--bd);border-radius:12px;overflow:hidden;margin-left:auto}.lang button{background:none;border:0;color:var(--mu);padding:9px 11px;font:700 .78rem inherit;cursor:pointer}.lang button.on{background:var(--brand);color:#0F0F0F}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--bd);background:var(--card);color:var(--tx);padding:11px 16px;border-radius:12px;font:700 .9rem inherit;cursor:pointer;min-height:44px;transition:.2s}
+.btn.p{background:var(--brand);color:#0F0F0F;border-color:transparent}.btn.o{border-color:rgba(255,159,28,.55);color:var(--bk)}.btn.r{border-color:rgba(255,77,94,.55);color:var(--busy)}.btn:disabled{opacity:.5}
+main{max-width:1120px;margin:auto;padding:16px 16px 40px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px}.stats div{padding:14px}.stats b{display:block;font-size:1.6rem}.stats span{color:var(--mu);font-size:.8rem}
+.tabs{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin-bottom:14px}.tabs::-webkit-scrollbar{display:none}
+.tab{padding:10px 18px;border-radius:99px;border:1px solid var(--bd);background:var(--card);color:var(--mu);cursor:pointer;white-space:nowrap;font-weight:600}.tab.on{color:var(--tx);border-color:var(--brand)}
+.bd{background:var(--busy);color:#fff;border-radius:99px;padding:1px 8px;font-size:.75rem;margin-left:6px}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;background:currentColor;box-shadow:0 0 10px currentColor}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.pc{padding:14px;cursor:pointer;border-color:rgba(var(--sg),.45);box-shadow:0 0 20px rgba(var(--sg),.13)}
+.pc.available{--s:var(--ok);--sg:93,214,44}.pc.occupied{--s:var(--busy);--sg:255,77,94}.pc.booked{--s:var(--bk);--sg:255,159,28}
+.pc .n{font-size:1.5rem;font-weight:800;display:flex;justify-content:space-between}.pw{font-size:.75rem;font-weight:600;color:var(--mu)}.pw.on{color:var(--brand)}
+.pc .st{color:var(--s);font-size:.8rem;font-weight:700;margin:2px 0 6px}.pc small{color:var(--mu);display:block;min-height:1.2em;font-size:.78rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tm{font-variant-numeric:tabular-nums;font-weight:700;color:var(--s)}.tm.over{color:var(--busy);animation:bl 1s infinite}@keyframes bl{50%{opacity:.4}}
+.rq{padding:16px;margin-bottom:10px;display:flex;flex-direction:column;gap:8px}.ok{color:var(--ok)}
+.row2{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.row2 .btn{flex:1}
+input,select{width:100%;background:rgba(248,248,248,.06);border:1px solid var(--bd);color:var(--tx);border-radius:12px;padding:12px;font:inherit;margin-top:8px;min-height:44px}select option{background:#202020}
+.lg{min-height:80vh;display:grid;place-items:center;padding:16px}.lgb{width:100%;max-width:360px;padding:28px;display:flex;flex-direction:column;gap:6px;text-align:center}
+.lgi,.dv{padding:10px 0;border-bottom:1px solid var(--bd);font-size:.9rem;display:flex;gap:10px;justify-content:space-between}.lgi span{color:var(--mu);font-size:.8rem;margin-right:8px}
+.modal{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.72);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:16px}.modal.open{display:flex}
+.box{width:100%;max-width:460px;max-height:88vh;overflow:auto;padding:24px;background:#202020}.x{float:right;background:none;border:0;color:var(--mu);font-size:1.8rem;line-height:1;cursor:pointer}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);max-width:92vw;text-align:center;background:#202020;border:1px solid var(--brand);padding:12px 20px;border-radius:12px;display:none;z-index:200;font-size:.9rem}
+@media(hover:hover){.btn:hover{border-color:var(--brand)}.pc:hover{transform:translateY(-3px)}}
+@media(max-width:700px){.grid{grid-template-columns:repeat(2,1fr);gap:10px}.modal{align-items:flex-end;padding:0}.box{max-width:100%;border-radius:22px 22px 0 0;padding:22px 18px calc(22px + env(safe-area-inset-bottom,0px))}}
+</style></head><body>
+<div id="login" class="lg"><div class="glass lgb">
+<div class="logo" style="font-size:1.3rem">GOKU <b>eSPORTS</b> · ADMIN</div>
+<h2 data-i="title" style="font-size:1.05rem;margin:6px 0"></h2>
+<input id="em" type="email" autocomplete="username" placeholder="Email">
+<input id="pw" type="password" autocomplete="current-password" data-ph="pw">
+<button class="btn p" id="go" style="margin-top:8px" data-i="signin"></button>
+<p id="err" class="live bad"></p>
+<div class="lang" style="margin:8px auto 0"><button data-l="ru">РУС</button><button data-l="kk">ҚАЗ</button></div>
+</div></div>
+<div id="app" class="hide">
+<header><div class="nav"><div class="logo">GOKU <b>eSPORTS</b> · ADMIN</div>
+<div class="lang"><button data-l="ru">РУС</button><button data-l="kk">ҚАЗ</button></div>
+<button class="btn" id="out" data-i="logout"></button></div></header>
+<main><div class="stats" id="stats"></div><div class="tabs" id="tabs"></div><div id="view"></div></main>
+</div>
+<div class="modal" id="modal"><div class="box glass" id="box"></div></div><div class="toast" id="toast"></div>
+<script>
+/* ===== CONFIG ===== */
+const SB={url:"https://otxbyexdfjwnqxugwhxy.supabase.co",
+ key:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im90eGJ5ZXhkZmp3bnF4dWd3aHh5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIxNDA4MjYsImV4cCI6MjEwNzcxNjgyNn0.6iQdJGXC3AUsr34bxlnkVSZzJN2d3MALlDtTIz-x7EQ"};
+const ONLINE_MS=20000,POLL_MS=3000;
+const T={
+ru:{title:"Вход для администратора",pw:"Пароль",signin:"Войти",wrong:"Неверный email или пароль",noadmin:"Нет прав администратора",logout:"Выйти",
+seats:"Места",req:"Заявки",log:"Журнал",dev:"Устройства",free:"Свободно",occ:"Занято",bk:"Бронь",rev:"Выручка сегодня",pend:"Новые заявки",
+available:"Свободен",occupied:"Занят",booked:"Забронирован",on:"онлайн",off:"офлайн",
+start:"Начать сессию",bookb:"Забронировать",cancel:"Снять бронь",checkin:"Клиент пришёл — начать",client:"Имя клиента",phone:"Телефон",hours:"ч",
+wake:"Включить ПК",shut:"Выключить",restart:"Перезагрузить",lock:"Заблокировать",end:"Завершить и выключить ПК",endk:"Завершить без выключения",left:"Осталось",over:"Время вышло",code:"Код",
+noreq:"Заявок нет",confirm:"Принять и включить ПК",reject:"Отклонить",rcOk:"✔ Чек получен",rcNo:"⚠ Чек не получен",eta:"придёт через",min:"мин",sendcode:"Отправить код клиенту",
+codeMsg:"Ваша заявка подтверждена. Код: ",sent:"Готово",err:"Ошибка",newReq:"🔔 Новая заявка",nolog:"Журнал пуст",noMac:"MAC неизвестен",agents:"Агентов онлайн",ext:"Продлить"},
+kk:{title:"Әкімші кіруі",pw:"Құпия сөз",signin:"Кіру",wrong:"Пошта немесе құпия сөз қате",noadmin:"Әкімші құқығы жоқ",logout:"Шығу",
+seats:"Орындар",req:"Өтінімдер",log:"Журнал",dev:"Құрылғылар",free:"Бос",occ:"Бос емес",bk:"Бронь",rev:"Бүгінгі түсім",pend:"Жаңа өтінім",
+available:"Бос",occupied:"Бос емес",booked:"Брондалған",on:"онлайн",off:"офлайн",
+start:"Сессияны бастау",bookb:"Брондау",cancel:"Брондан алу",checkin:"Клиент келді — бастау",client:"Клиент аты",phone:"Телефон",hours:"сағ",
+wake:"Компьютерді қосу",shut:"Өшіру",restart:"Қайта қосу",lock:"Бұғаттау",end:"Аяқтап, компьютерді өшіру",endk:"Өшірмей аяқтау",left:"Қалды",over:"Уақыт бітті",code:"Код",
+noreq:"Өтінім жоқ",confirm:"Қабылдап, компьютерді қосу",reject:"Қабылдамау",rcOk:"✔ Чек түсті",rcNo:"⚠ Чек түскен жоқ",eta:"келеді",min:"мин",sendcode:"Кодты клиентке жіберу",
+codeMsg:"Өтініміңіз расталды. Код: ",sent:"Дайын",err:"Қате",newReq:"🔔 Жаңа өтінім",nolog:"Журнал бос",noMac:"MAC белгісіз",agents:"Онлайн агент",ext:"Ұзарту"}};
+let L="ru";try{L=localStorage.getItem("lang")||"ru"}catch(e){}
+const t=k=>T[L][k]||k,$=s=>document.querySelector(s),pad=n=>String(n).padStart(2,"0");
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const money=n=>Number(n||0).toLocaleString("ru")+" ₸";
+const ZN={comfort:"Комфорт",duo:"Дуо",vip:"VIP"};
+/* ===== auth + api ===== */
+let AUTH=null;try{AUTH=JSON.parse(localStorage.getItem("gk_auth")||"null")}catch(e){}
+function saveAuth(j){AUTH={access_token:j.access_token,refresh_token:j.refresh_token,expires_at:j.expires_at||Math.floor(Date.now()/1000)+(j.expires_in||3600)};try{localStorage.setItem("gk_auth",JSON.stringify(AUTH))}catch(e){}}
+async function ensureToken(){if(!AUTH)throw new Error("auth");if(AUTH.expires_at-60<Date.now()/1000){
+  const r=await fetch(SB.url+"/auth/v1/token?grant_type=refresh_token",{method:"POST",headers:{apikey:SB.key,"Content-Type":"application/json"},body:JSON.stringify({refresh_token:AUTH.refresh_token})});
+  if(!r.ok){logout();throw new Error("auth")}saveAuth(await r.json())}}
+async function api(path,opts){opts=opts||{};await ensureToken();
+  const r=await fetch(SB.url+path,{...opts,headers:{apikey:SB.key,Authorization:"Bearer "+AUTH.access_token,"Content-Type":"application/json",...(opts.headers||{})}});
+  if(r.status==401){logout();throw new Error("auth")}
+  if(!r.ok){let m="";try{m=(await r.json()).message}catch(e){}throw new Error(m||r.status)}
+  const tx=await r.text();return tx?JSON.parse(tx):null}
+const rpc=(fn,b)=>api("/rest/v1/rpc/"+fn,{method:"POST",body:JSON.stringify(b||{})});
+async function login(){$("#err").textContent="";const b=$("#go");b.disabled=true;
+  try{const r=await fetch(SB.url+"/auth/v1/token?grant_type=password",{method:"POST",headers:{apikey:SB.key,"Content-Type":"application/json"},body:JSON.stringify({email:$("#em").value.trim(),password:$("#pw").value})});
+    if(!r.ok){$("#err").textContent=t("wrong");return}
+    saveAuth(await r.json());
+    if(!(await rpc("is_admin"))){logout();$("#err").textContent=t("noadmin");return}
+    start()}catch(e){$("#err").textContent=t("err")+": "+e.message}finally{b.disabled=false}}
+function logout(){AUTH=null;try{localStorage.removeItem("gk_auth")}catch(e){}clearInterval(TM);clearInterval(PL);$("#app").classList.add("hide");$("#login").classList.remove("hide");$("#pw").value=""}
+/* ===== state ===== */
+let tab="seats",D={pcs:[],reqs:[],rev:0,log:[],hp:{}},SIG="",PL=null,TM=null,LASTNEW=-1;
+const online=p=>p.last_seen&&Date.now()-new Date(p.last_seen).getTime()<ONLINE_MS;
+function toast(x){const e=$("#toast");e.textContent=x;e.style.display="block";clearTimeout(toast.h);toast.h=setTimeout(()=>e.style.display="none",3200)}
+async function refresh(force){
+  const d0=new Date();d0.setHours(0,0,0,0);
+  const [pcs,reqs,sess,log]=await Promise.all([
+    api("/rest/v1/pcs?select=id,zone,status,client,phone,session_end,last_seen,mac&order=id"),
+    api("/rest/v1/requests?select=id,pc_id,tariff_label,hours,price,eta,name,phone,receipt,state,code,created_at&state=neq.rejected&order=created_at.desc&limit=40"),
+    api("/rest/v1/sessions?select=price&started_at=gte."+encodeURIComponent(d0.toISOString())),
+    tab=="log"?api("/rest/v1/log?select=ts,text&order=ts.desc&limit=60"):Promise.resolve(D.log)]);
+  if(!Object.keys(D.hp).length){const tf=await api("/rest/v1/tariffs?select=zone,price&key=eq.hour");tf.forEach(x=>D.hp[x.zone]=x.price)}
+  D.pcs=pcs;D.reqs=reqs;D.log=log;D.rev=sess.reduce((a,s)=>a+s.price,0);
+  const pend=reqs.filter(r=>r.state=="new").length;
+  if(LASTNEW>=0&&pend>LASTNEW){toast(t("newReq"));document.title="("+pend+") goku Admin"}if(!pend)document.title="goku eSports — Admin";LASTNEW=pend;
+  const sig=JSON.stringify([pcs.map(p=>({...p,last_seen:0,o:online(p)})),reqs,D.rev,tab,log.length&&log[0]]);
+  if(force||sig!==SIG){SIG=sig;render()}}
+function render(){
+  const c=k=>D.pcs.filter(p=>p.status==k).length,pend=D.reqs.filter(r=>r.state=="new").length;
+  $("#stats").innerHTML=[[c("available"),"free","var(--ok)"],[c("occupied"),"occ","var(--busy)"],[c("booked"),"bk","var(--bk)"],[money(D.rev),"rev","var(--brand)"],[pend,"pend","var(--tx)"]].map(x=>`<div class="glass"><b style="color:${x[2]}">${x[0]}</b><span>${t(x[1])}</span></div>`).join("");
+  $("#tabs").innerHTML=["seats","req","log","dev"].map(k=>`<span class="tab ${tab==k?"on":""}" data-tab="${k}">${t(k)}${k=="req"&&pend?`<span class="bd">${pend}</span>`:""}</span>`).join("");
+  const v=$("#view");
+  if(tab=="seats")v.innerHTML=`<div class="grid">${D.pcs.map(p=>`<div class="pc glass ${p.status}" data-id="${p.id}" tabindex="0" role="button"><div class="n">PC ${pad(p.id)}<span class="pw ${online(p)?"on":""}">● ${online(p)?t("on"):t("off")}</span></div><div class="st"><i class="dot"></i>${t(p.status)}</div><small>${esc(ZN[p.zone]||p.zone)}${p.client?" · "+esc(p.client):""}</small>${p.status=="occupied"?`<div class="tm" data-id="${p.id}"></div>`:""}</div>`).join("")}</div>`;
+  if(tab=="req")v.innerHTML=D.reqs.length?D.reqs.map(r=>{const lb=r.tariff_label?(r.tariff_label[L]||r.tariff_label.ru):r.hours+" "+t("hours");
+    return `<div class="glass rq"><b>PC ${pad(r.pc_id)} · ${esc(lb)} · ${money(r.price)}</b><span>${esc(r.name)} · ${esc(r.phone)}${r.eta!=null?` · ${t("eta")} ${r.eta} ${t("min")}`:""}</span><span class="${r.receipt?"ok":"bad"}">${r.receipt?t("rcOk"):t("rcNo")}</span>${r.state=="new"?`<div class="row2"><button class="btn p" onclick="confirmR('${r.id}')">${t("confirm")}</button><button class="btn r" onclick="rejectR('${r.id}')">${t("reject")}</button></div>`:`<span>${t("code")}: <b class="g">${esc(r.code)}</b></span><a class="btn" target="_blank" rel="noopener" href="https://wa.me/${String(r.phone).replace(/\D/g,"")}?text=${encodeURIComponent(t("codeMsg")+r.code)}">${t("sendcode")}</a>`}</div>`}).join(""):`<p class="live">${t("noreq")}</p>`;
+  if(tab=="log")v.innerHTML=D.log.length?`<div class="glass" style="padding:8px 16px">${D.log.map(l=>`<div class="lgi"><div><span>${new Date(l.ts).toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"})}</span>${esc(l.text)}</div></div>`).join("")}</div>`:`<p class="live">${t("nolog")}</p>`;
+  if(tab=="dev"){const on=D.pcs.filter(online).length;v.innerHTML=`<p class="live" style="margin-bottom:10px">${t("agents")}: <b class="g">${on}/${D.pcs.length}</b></p><div class="glass" style="padding:8px 16px">${D.pcs.map(p=>`<div class="dv"><span>PC ${pad(p.id)} · ${esc(ZN[p.zone]||p.zone)}</span><span><span class="${online(p)?"g":"bad"}">● ${online(p)?t("on"):t("off")}</span> · ${p.mac?esc(p.mac):t("noMac")}</span></div>`).join("")}</div>`}
+  tick()}
+function tick(){document.querySelectorAll(".tm").forEach(e=>{const p=D.pcs.find(x=>x.id==e.dataset.id);if(!p||!p.session_end)return;const r=new Date(p.session_end)-Date.now();e.classList.toggle("over",r<=0);
+  e.textContent=r<=0?t("over"):t("left")+" "+(Math.floor(r/3600000))+":"+pad(Math.floor(r%3600000/60000))+":"+pad(Math.floor(r%60000/1000))})}
+/* ===== actions ===== */
+async function act(fn,b,msg){try{const r=await rpc(fn,b);toast(msg||t("sent"));await refresh(true);return r}catch(e){toast(t("err")+": "+e.message)}}
+async function confirmR(id){const c=await act("confirm_request",{p_id:id},null);if(c)toast(t("code")+": "+c)}
+const rejectR=id=>act("reject_request",{p_id:id});
+function cmd(id,a){closeM();act("send_command",{p_pc:id,p_action:a})}
+function endS(id,sd){closeM();act("end_session",{p_pc:id,p_shutdown:sd})}
+function extend(id,m){const p=D.pcs.find(x=>x.id==id);closeM();act("extend_session",{p_pc:id,p_minutes:m,p_price:Math.round((D.hp[p.zone]||0)*m/60)})}
+function startForm(id){const s=$("#fh"),o=s.selectedOptions[0],b={p_pc:id,p_client:$("#fn").value,p_phone:$("#fp").value,p_hours:+s.value,p_price:+o.dataset.p};closeM();act("start_session",b)}
+async function patchPc(id,body){try{await api("/rest/v1/pcs?id=eq."+id,{method:"PATCH",headers:{Prefer:"return=minimal"},body:JSON.stringify(body)});closeM();await refresh(true)}catch(e){toast(t("err")+": "+e.message)}}
+const bookForm=id=>patchPc(id,{status:"booked",client:$("#fn").value,phone:$("#fp").value});
+const cancelB=id=>patchPc(id,{status:"available",client:null,phone:null});
+function openSeat(id){const p=D.pcs.find(x=>x.id==id);if(!p)return;let h=`<button class="x" aria-label="Close" onclick="closeM()">×</button><h2>PC ${pad(id)} · ${esc(ZN[p.zone]||p.zone)}</h2><p class="pc ${p.status}" style="border:0;box-shadow:none;background:none;padding:0;cursor:default"><span class="st"><i class="dot"></i>${t(p.status)}</span> · ${online(p)?t("on"):t("off")}</p>`;
+  if(p.status=="occupied")h+=`<p style="margin-top:10px">${esc(p.client||"—")} · <b class="tm" data-id="${id}"></b></p><div class="row2"><button class="btn" onclick="extend(${id},30)">+30 ${t("min")}</button><button class="btn" onclick="extend(${id},60)">+60 ${t("min")}</button></div><div class="row2"><button class="btn r" onclick="endS(${id},true)">${t("end")}</button></div><div class="row2"><button class="btn" onclick="endS(${id},false)">${t("endk")}</button></div>`;
+  else{const hp=D.hp[p.zone]||0;h+=`<input id="fn" placeholder="${t("client")}" value="${esc(p.client||"")}"><input id="fp" type="tel" placeholder="${t("phone")}" value="${esc(p.phone||"")}"><select id="fh">${[1,2,3,5].map(n=>`<option value="${n}" data-p="${n*hp}">${n} ${t("hours")} — ${money(n*hp)}</option>`).join("")}</select><div class="row2"><button class="btn p" onclick="startForm(${id})">${p.status=="booked"?t("checkin"):t("start")}</button>${p.status=="available"?`<button class="btn o" onclick="bookForm(${id})">${t("bookb")}</button>`:`<button class="btn o" onclick="cancelB(${id})">${t("cancel")}</button>`}</div>`}
+  h+=`<div class="row2"><button class="btn" onclick="cmd(${id},'wake')">⏻ ${t("wake")}</button><button class="btn" onclick="cmd(${id},'shutdown')">${t("shut")}</button></div><div class="row2"><button class="btn" onclick="cmd(${id},'restart')">↻ ${t("restart")}</button><button class="btn" onclick="cmd(${id},'lock')">🔒 ${t("lock")}</button></div>`;
+  $("#box").innerHTML=h;$("#modal").classList.add("open");document.body.classList.add("lock");tick()}
+function closeM(){$("#modal").classList.remove("open");document.body.classList.remove("lock")}
+function applyLang(){document.documentElement.lang=L;document.querySelectorAll("[data-i]").forEach(e=>e.textContent=t(e.dataset.i));document.querySelectorAll("[data-ph]").forEach(e=>e.placeholder=t(e.dataset.ph));document.querySelectorAll(".lang button").forEach(b=>b.classList.toggle("on",b.dataset.l==L));if(!$("#app").classList.contains("hide"))render()}
+function start(){$("#login").classList.add("hide");$("#app").classList.remove("hide");SIG="";LASTNEW=-1;refresh(true).catch(e=>toast(t("err")+": "+e.message));
+  clearInterval(PL);clearInterval(TM);PL=setInterval(()=>{if(!document.hidden)refresh().catch(()=>{})},POLL_MS);TM=setInterval(tick,1000)}
+document.addEventListener("click",e=>{
+  const l=e.target.closest("[data-l]");if(l){L=l.dataset.l;try{localStorage.setItem("lang",L)}catch(x){}closeM();applyLang();return}
+  const tb=e.target.closest("[data-tab]");if(tb){tab=tb.dataset.tab;SIG="";refresh(true).catch(()=>{})}
+  const p=e.target.closest(".pc");if(p&&p.dataset.id)openSeat(p.dataset.id);
+  if(e.target==$("#modal"))closeM()});
+$("#go").onclick=login;$("#out").onclick=logout;
+document.addEventListener("keydown",e=>{if(e.key=="Escape")closeM();if(e.key=="Enter"){if(e.target.id=="pw"||e.target.id=="em")login();else if(e.target.classList&&e.target.classList.contains("pc"))openSeat(e.target.dataset.id)}});
+applyLang();if(AUTH)start();
+</script></body></html>
