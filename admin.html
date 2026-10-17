@@ -65,14 +65,14 @@ available:"Свободен",occupied:"Занят",booked:"Заброниров�
 start:"Начать сессию",bookb:"Забронировать",cancel:"Снять бронь",checkin:"Клиент пришёл — начать",client:"Имя клиента",phone:"Телефон",hours:"ч",
 wake:"Включить ПК",shut:"Выключить",restart:"Перезагрузить",lock:"Заблокировать",end:"Завершить и выключить ПК",endk:"Завершить без выключения",left:"Осталось",over:"Время вышло",code:"Код",
 noreq:"Заявок нет",confirm:"Принять и включить ПК",reject:"Отклонить",rcOk:"✔ Чек получен",rcNo:"⚠ Чек не получен",eta:"придёт через",min:"мин",sendcode:"Отправить код клиенту",
-codeMsg:"Ваша заявка подтверждена. Код: ",sent:"Готово",err:"Ошибка",newReq:"🔔 Новая заявка",nolog:"Журнал пуст",noMac:"MAC неизвестен",agents:"Агентов онлайн",ext:"Продлить"},
+codeMsg:"Ваша заявка подтверждена. Код: ",sent:"Готово",err:"Ошибка",newReq:"🔔 Новая заявка",nolog:"Журнал пуст",noMac:"MAC неизвестен",agents:"Агентов онлайн",ext:"Продлить",waitC:"Ждём клиента",unlockB:"Разблокировать вручную",rcView:"Открыть чек",codePc:"Код на ПК"},
 kk:{title:"Әкімші кіруі",pw:"Құпия сөз",signin:"Кіру",wrong:"Пошта немесе құпия сөз қате",noadmin:"Әкімші құқығы жоқ",logout:"Шығу",
 seats:"Орындар",req:"Өтінімдер",log:"Журнал",dev:"Құрылғылар",free:"Бос",occ:"Бос емес",bk:"Бронь",rev:"Бүгінгі түсім",pend:"Жаңа өтінім",
 available:"Бос",occupied:"Бос емес",booked:"Брондалған",on:"онлайн",off:"офлайн",
 start:"Сессияны бастау",bookb:"Брондау",cancel:"Брондан алу",checkin:"Клиент келді — бастау",client:"Клиент аты",phone:"Телефон",hours:"сағ",
 wake:"Компьютерді қосу",shut:"Өшіру",restart:"Қайта қосу",lock:"Бұғаттау",end:"Аяқтап, компьютерді өшіру",endk:"Өшірмей аяқтау",left:"Қалды",over:"Уақыт бітті",code:"Код",
 noreq:"Өтінім жоқ",confirm:"Қабылдап, компьютерді қосу",reject:"Қабылдамау",rcOk:"✔ Чек түсті",rcNo:"⚠ Чек түскен жоқ",eta:"келеді",min:"мин",sendcode:"Кодты клиентке жіберу",
-codeMsg:"Өтініміңіз расталды. Код: ",sent:"Дайын",err:"Қате",newReq:"🔔 Жаңа өтінім",nolog:"Журнал бос",noMac:"MAC белгісіз",agents:"Онлайн агент",ext:"Ұзарту"}};
+codeMsg:"Өтініміңіз расталды. Код: ",sent:"Дайын",err:"Қате",newReq:"🔔 Жаңа өтінім",nolog:"Журнал бос",noMac:"MAC белгісіз",agents:"Онлайн агент",ext:"Ұзарту",waitC:"Клиентті күтеміз",unlockB:"Қолмен ашу",rcView:"Чекті ашу",codePc:"ДК коды"}};
 let L="ru";try{L=localStorage.getItem("lang")||"ru"}catch(e){}
 const t=k=>T[L][k]||k,$=s=>document.querySelector(s),pad=n=>String(n).padStart(2,"0");
 const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -104,8 +104,8 @@ function toast(x){const e=$("#toast");e.textContent=x;e.style.display="block";cl
 async function refresh(force){
   const d0=new Date();d0.setHours(0,0,0,0);
   const [pcs,reqs,sess,log]=await Promise.all([
-    api("/rest/v1/pcs?select=id,zone,status,client,phone,session_end,last_seen,mac&order=id"),
-    api("/rest/v1/requests?select=id,pc_id,tariff_label,hours,price,eta,name,phone,receipt,state,code,created_at&state=neq.rejected&order=created_at.desc&limit=40"),
+    api("/rest/v1/pcs?select=id,zone,status,client,phone,session_end,last_seen,mac,unlock_code,unlocked&order=id"),
+    api("/rest/v1/requests?select=id,pc_id,tariff_label,hours,price,eta,name,phone,receipt,receipt_path,state,code,created_at&state=neq.rejected&order=created_at.desc&limit=40"),
     api("/rest/v1/sessions?select=price&started_at=gte."+encodeURIComponent(d0.toISOString())),
     tab=="log"?api("/rest/v1/log?select=ts,text&order=ts.desc&limit=60"):Promise.resolve(D.log)]);
   if(!Object.keys(D.hp).length){const tf=await api("/rest/v1/tariffs?select=zone,price&key=eq.hour");tf.forEach(x=>D.hp[x.zone]=x.price)}
@@ -119,18 +119,20 @@ function render(){
   $("#stats").innerHTML=[[c("available"),"free","var(--ok)"],[c("occupied"),"occ","var(--busy)"],[c("booked"),"bk","var(--bk)"],[money(D.rev),"rev","var(--brand)"],[pend,"pend","var(--tx)"]].map(x=>`<div class="glass"><b style="color:${x[2]}">${x[0]}</b><span>${t(x[1])}</span></div>`).join("");
   $("#tabs").innerHTML=["seats","req","log","dev"].map(k=>`<span class="tab ${tab==k?"on":""}" data-tab="${k}">${t(k)}${k=="req"&&pend?`<span class="bd">${pend}</span>`:""}</span>`).join("");
   const v=$("#view");
-  if(tab=="seats")v.innerHTML=`<div class="grid">${D.pcs.map(p=>`<div class="pc glass ${p.status}" data-id="${p.id}" tabindex="0" role="button"><div class="n">PC ${pad(p.id)}<span class="pw ${online(p)?"on":""}">● ${online(p)?t("on"):t("off")}</span></div><div class="st"><i class="dot"></i>${t(p.status)}</div><small>${esc(ZN[p.zone]||p.zone)}${p.client?" · "+esc(p.client):""}</small>${p.status=="occupied"?`<div class="tm" data-id="${p.id}"></div>`:""}</div>`).join("")}</div>`;
+  if(tab=="seats")v.innerHTML=`<div class="grid">${D.pcs.map(p=>`<div class="pc glass ${p.status}" data-id="${p.id}" tabindex="0" role="button"><div class="n">PC ${pad(p.id)}<span class="pw ${online(p)?"on":""}">● ${online(p)?t("on"):t("off")}</span></div><div class="st"><i class="dot"></i>${t(p.status)}</div><small>${esc(ZN[p.zone]||p.zone)}${p.client?" · "+esc(p.client):""}${p.status=="occupied"&&!p.unlocked&&p.unlock_code?" · 🔑 "+esc(p.unlock_code):""}</small>${p.status=="occupied"?`<div class="tm" data-id="${p.id}"></div>`:""}</div>`).join("")}</div>`;
   if(tab=="req")v.innerHTML=D.reqs.length?D.reqs.map(r=>{const lb=r.tariff_label?(r.tariff_label[L]||r.tariff_label.ru):r.hours+" "+t("hours");
-    return `<div class="glass rq"><b>PC ${pad(r.pc_id)} · ${esc(lb)} · ${money(r.price)}</b><span>${esc(r.name)} · ${esc(r.phone)}${r.eta!=null?` · ${t("eta")} ${r.eta} ${t("min")}`:""}</span><span class="${r.receipt?"ok":"bad"}">${r.receipt?t("rcOk"):t("rcNo")}</span>${r.state=="new"?`<div class="row2"><button class="btn p" onclick="confirmR('${r.id}')">${t("confirm")}</button><button class="btn r" onclick="rejectR('${r.id}')">${t("reject")}</button></div>`:`<span>${t("code")}: <b class="g">${esc(r.code)}</b></span><a class="btn" target="_blank" rel="noopener" href="https://wa.me/${String(r.phone).replace(/\D/g,"")}?text=${encodeURIComponent(t("codeMsg")+r.code)}">${t("sendcode")}</a>`}</div>`}).join(""):`<p class="live">${t("noreq")}</p>`;
+    return `<div class="glass rq"><b>PC ${pad(r.pc_id)} · ${esc(lb)} · ${money(r.price)}</b><span>${esc(r.name)} · ${esc(r.phone)}${r.eta!=null?` · ${t("eta")} ${r.eta} ${t("min")}`:""}</span><span class="${r.receipt?"ok":"bad"}">${r.receipt?t("rcOk"):t("rcNo")}</span>${r.receipt_path?`<button class="btn" data-rc="${esc(r.receipt_path)}">📎 ${t("rcView")}</button>`:""}${r.state=="new"?`<div class="row2"><button class="btn p" onclick="confirmR('${r.id}')">${t("confirm")}</button><button class="btn r" onclick="rejectR('${r.id}')">${t("reject")}</button></div>`:`<span>${t("code")}: <b class="g">${esc(r.code)}</b></span><a class="btn" target="_blank" rel="noopener" href="https://wa.me/${String(r.phone).replace(/\D/g,"")}?text=${encodeURIComponent(t("codeMsg")+r.code)}">${t("sendcode")}</a>`}</div>`}).join(""):`<p class="live">${t("noreq")}</p>`;
   if(tab=="log")v.innerHTML=D.log.length?`<div class="glass" style="padding:8px 16px">${D.log.map(l=>`<div class="lgi"><div><span>${new Date(l.ts).toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"})}</span>${esc(l.text)}</div></div>`).join("")}</div>`:`<p class="live">${t("nolog")}</p>`;
   if(tab=="dev"){const on=D.pcs.filter(online).length;v.innerHTML=`<p class="live" style="margin-bottom:10px">${t("agents")}: <b class="g">${on}/${D.pcs.length}</b></p><div class="glass" style="padding:8px 16px">${D.pcs.map(p=>`<div class="dv"><span>PC ${pad(p.id)} · ${esc(ZN[p.zone]||p.zone)}</span><span><span class="${online(p)?"g":"bad"}">● ${online(p)?t("on"):t("off")}</span> · ${p.mac?esc(p.mac):t("noMac")}</span></div>`).join("")}</div>`}
   tick()}
-function tick(){document.querySelectorAll(".tm").forEach(e=>{const p=D.pcs.find(x=>x.id==e.dataset.id);if(!p||!p.session_end)return;const r=new Date(p.session_end)-Date.now();e.classList.toggle("over",r<=0);
+function tick(){document.querySelectorAll(".tm").forEach(e=>{const p=D.pcs.find(x=>x.id==e.dataset.id);if(!p)return;if(!p.session_end){e.textContent=t("waitC");return}const r=new Date(p.session_end)-Date.now();e.classList.toggle("over",r<=0);
   e.textContent=r<=0?t("over"):t("left")+" "+(Math.floor(r/3600000))+":"+pad(Math.floor(r%3600000/60000))+":"+pad(Math.floor(r%60000/1000))})}
 /* ===== actions ===== */
 async function act(fn,b,msg){try{const r=await rpc(fn,b);toast(msg||t("sent"));await refresh(true);return r}catch(e){toast(t("err")+": "+e.message)}}
 async function confirmR(id){const c=await act("confirm_request",{p_id:id},null);if(c)toast(t("code")+": "+c)}
 const rejectR=id=>act("reject_request",{p_id:id});
+const unlockPc=id=>{closeM();act("unlock_pc",{p_pc:id})};
+async function openReceipt(path){const w=window.open("about:blank","_blank");try{const j=await api("/storage/v1/object/sign/receipts/"+path.split("/").map(encodeURIComponent).join("/"),{method:"POST",body:JSON.stringify({expiresIn:600})});w.location=SB.url+"/storage/v1"+j.signedURL}catch(e){if(w)w.close();toast(t("err")+": "+e.message)}}
 function cmd(id,a){closeM();act("send_command",{p_pc:id,p_action:a})}
 function endS(id,sd){closeM();act("end_session",{p_pc:id,p_shutdown:sd})}
 function extend(id,m){const p=D.pcs.find(x=>x.id==id);closeM();act("extend_session",{p_pc:id,p_minutes:m,p_price:Math.round((D.hp[p.zone]||0)*m/60)})}
@@ -139,9 +141,9 @@ async function patchPc(id,body){try{await api("/rest/v1/pcs?id=eq."+id,{method:"
 const bookForm=id=>patchPc(id,{status:"booked",client:$("#fn").value,phone:$("#fp").value});
 const cancelB=id=>patchPc(id,{status:"available",client:null,phone:null});
 function openSeat(id){const p=D.pcs.find(x=>x.id==id);if(!p)return;let h=`<button class="x" aria-label="Close" onclick="closeM()">×</button><h2>PC ${pad(id)} · ${esc(ZN[p.zone]||p.zone)}</h2><p class="pc ${p.status}" style="border:0;box-shadow:none;background:none;padding:0;cursor:default"><span class="st"><i class="dot"></i>${t(p.status)}</span> · ${online(p)?t("on"):t("off")}</p>`;
-  if(p.status=="occupied")h+=`<p style="margin-top:10px">${esc(p.client||"—")} · <b class="tm" data-id="${id}"></b></p><div class="row2"><button class="btn" onclick="extend(${id},30)">+30 ${t("min")}</button><button class="btn" onclick="extend(${id},60)">+60 ${t("min")}</button></div><div class="row2"><button class="btn r" onclick="endS(${id},true)">${t("end")}</button></div><div class="row2"><button class="btn" onclick="endS(${id},false)">${t("endk")}</button></div>`;
+  if(p.status=="occupied")h+=`<p style="margin-top:10px">${esc(p.client||"—")} · <b class="tm" data-id="${id}"></b></p><p class="live">${t("codePc")}: <b class="g">${esc(p.unlock_code||"—")}</b></p>${p.unlocked?"":`<div class="row2"><button class="btn p" onclick="unlockPc(${id})">${t("unlockB")}</button></div>`}<div class="row2"><button class="btn" onclick="extend(${id},30)">+30 ${t("min")}</button><button class="btn" onclick="extend(${id},60)">+60 ${t("min")}</button></div><div class="row2"><button class="btn r" onclick="endS(${id},true)">${t("end")}</button></div><div class="row2"><button class="btn" onclick="endS(${id},false)">${t("endk")}</button></div>`;
   else{const hp=D.hp[p.zone]||0;h+=`<input id="fn" placeholder="${t("client")}" value="${esc(p.client||"")}"><input id="fp" type="tel" placeholder="${t("phone")}" value="${esc(p.phone||"")}"><select id="fh">${[1,2,3,5].map(n=>`<option value="${n}" data-p="${n*hp}">${n} ${t("hours")} — ${money(n*hp)}</option>`).join("")}</select><div class="row2"><button class="btn p" onclick="startForm(${id})">${p.status=="booked"?t("checkin"):t("start")}</button>${p.status=="available"?`<button class="btn o" onclick="bookForm(${id})">${t("bookb")}</button>`:`<button class="btn o" onclick="cancelB(${id})">${t("cancel")}</button>`}</div>`}
-  h+=`<div class="row2"><button class="btn" onclick="cmd(${id},'wake')">⏻ ${t("wake")}</button><button class="btn" onclick="cmd(${id},'shutdown')">${t("shut")}</button></div><div class="row2"><button class="btn" onclick="cmd(${id},'restart')">↻ ${t("restart")}</button><button class="btn" onclick="cmd(${id},'lock')">🔒 ${t("lock")}</button></div>`;
+  h+=`<div class="row2"><button class="btn" onclick="cmd(${id},'wake')">⏻ ${t("wake")}</button><button class="btn" onclick="cmd(${id},'shutdown')">${t("shut")}</button></div><div class="row2"><button class="btn" onclick="cmd(${id},'restart')">↻ ${t("restart")}</button></div>`;
   $("#box").innerHTML=h;$("#modal").classList.add("open");document.body.classList.add("lock");tick()}
 function closeM(){$("#modal").classList.remove("open");document.body.classList.remove("lock")}
 function applyLang(){document.documentElement.lang=L;document.querySelectorAll("[data-i]").forEach(e=>e.textContent=t(e.dataset.i));document.querySelectorAll("[data-ph]").forEach(e=>e.placeholder=t(e.dataset.ph));document.querySelectorAll(".lang button").forEach(b=>b.classList.toggle("on",b.dataset.l==L));if(!$("#app").classList.contains("hide"))render()}
@@ -149,6 +151,7 @@ function start(){$("#login").classList.add("hide");$("#app").classList.remove("h
   clearInterval(PL);clearInterval(TM);PL=setInterval(()=>{if(!document.hidden)refresh().catch(()=>{})},POLL_MS);TM=setInterval(tick,1000)}
 document.addEventListener("click",e=>{
   const l=e.target.closest("[data-l]");if(l){L=l.dataset.l;try{localStorage.setItem("lang",L)}catch(x){}closeM();applyLang();return}
+  const rc=e.target.closest("[data-rc]");if(rc)openReceipt(rc.dataset.rc);
   const tb=e.target.closest("[data-tab]");if(tb){tab=tb.dataset.tab;SIG="";refresh(true).catch(()=>{})}
   const p=e.target.closest(".pc");if(p&&p.dataset.id)openSeat(p.dataset.id);
   if(e.target==$("#modal"))closeM()});

@@ -188,6 +188,7 @@ nav .btn.nb{padding:7px 13px;font-size:.78rem;min-height:36px;border-radius:11px
 <footer data-i="foot"></footer>
 
 <div class="dock"><a class="btn p" href="#" data-book data-i="book"></a><a class="btn o" href="#" data-receipt data-i="rc"></a></div>
+<input type="file" id="rcf" accept="image/*,application/pdf" hidden>
 <div class="modal" id="modal"><div class="box glass" id="box"></div></div>
 <div class="toast" id="toast"></div>
 
@@ -267,8 +268,8 @@ sp:{CPU:"Процессор",GPU:"Бейнекарта",RAM:"Жад",Monitor:"М
 Object.assign(T.ru,{book:"Я иду — включите ПК",bookb:"⚡ Я иду — включить ПК",kaspi:"💳 Оплатить через Kaspi",h1:'Включи ПК онлайн.<br><span class="g">Ещё по дороге в клуб.</span>',hp:"goku eSports — крупный компьютерный клуб нового уровня в Актау. Выбери свободный ПК, нажми «Я иду» — оператор включит его к твоему приходу.",b2:"Без очереди и без звонков.",st1:"Выберите свободный компьютер выше.",st2:"Нажмите «Я иду» — заявка уйдёт оператору, он включит ПК.",st3:"Получите код и оплатите через Kaspi (чек отправьте менеджеру).",a3:"Заявка онлайн",a3p:"Выбери ПК и отправь заявку по дороге.",q1:"Как включить ПК заранее?",a_1:"Выберите зелёный компьютер и нажмите «Я иду». Оператор подтвердит заявку и включит ПК, вам придёт код для входа.",omwT:"Я иду в клуб",pcL:"Компьютер",etaL:"Приду через",min:"мин",send:"Отправить заявку",sentT:"Заявка отправлена оператору",waitT:"Ждём подтверждения оператора…",okT:"Оператор подтвердил! ПК включается.",codeL:"Ваш код для входа",rejT:"Заявка отклонена оператором. Позвоните в клуб.",nameL:"Ваше имя",phoneL:"Телефон",hoursL:"Часов",needName:"Введите имя и телефон",taken:"Этот ПК уже занят",adminClose:"← К сайту",adminHint:"Демо-режим · PIN: 0000"});
 Object.assign(T.kk,{book:"Мен жолдамын — ДК қосыңыз",bookb:"⚡ Мен жолдамын — ДК қосу",kaspi:"💳 Kaspi арқылы төлеу",h1:'ДК-ны онлайн қос.<br><span class="g">Клубқа бара жатқанда.</span>',hp:"goku eSports — Ақтаудағы жаңа деңгейдегі ірі компьютерлік клуб. Бос ДК таңда, «Мен жолдамын» бас — оператор сен келгенше қосып қояды.",b2:"Кезексіз, қоңыраусыз.",st1:"Жоғарыдан бос компьютерді таңдаңыз.",st2:"«Мен жолдамын» түймесін басыңыз — өтінім операторға түседі, ол ДК-ны қосады.",st3:"Кодты алыңыз да, Kaspi арқылы төлеңіз (чекті менеджерге жіберіңіз).",a3:"Онлайн өтінім",a3p:"ДК таңдап, жолда өтінім жібер.",q1:"ДК-ны алдын ала қалай қосамын?",a_1:"Жасыл компьютерді таңдап, «Мен жолдамын» түймесін басыңыз. Оператор өтінімді растап, ДК-ны қосады, сізге кіру коды келеді.",omwT:"Мен клубқа бара жатырмын",pcL:"Компьютер",etaL:"Келемін",min:"мин",send:"Өтінімді жіберу",sentT:"Өтінім операторға жіберілді",waitT:"Оператор растауын күтеміз…",okT:"Оператор растады! ДК қосылуда.",codeL:"Кіру коды",rejT:"Оператор өтінімді қабылдамады. Клубқа қоңырау шалыңыз.",nameL:"Атыңыз",phoneL:"Телефон",hoursL:"Сағат",needName:"Аты мен телефонды енгізіңіз",taken:"Бұл ДК бос емес",adminClose:"← Сайтқа",adminHint:"Демо режим · PIN: 0000"});
 Object.assign(T.ru,{zs:"Характеристики зоны"});Object.assign(T.ru.sp,{Chair:"Кресло",Pad:"Коврик"});Object.assign(T.kk.sp,{Chair:"Кресло",Pad:"Тышқан кілемшесі"});Object.assign(T.kk,{zs:"Аймақ сипаттамасы"});
-Object.assign(T.ru,{tooMany:"Слишком много заявок, попробуйте позже",pick:"Выбрать и продолжить",tf:"Тарифы",school:"Школьный (Комфорт)",bonus:"Бонус при пополнении",gift:"в подарок",pay:"Выберите тариф"});
-Object.assign(T.kk,{tooMany:"Өтінім тым көп, кейінірек қайталаңыз",pick:"Таңдап, жалғастыру",tf:"Тарифтер",school:"Мектеп тарифі (Комфорт)",bonus:"Толықтыру бонусы",gift:"сыйға",pay:"Тарифті таңдаңыз"});
+Object.assign(T.ru,{rcSent:"Чек отправлен оператору",rcBig:"Файл слишком большой (макс. 5 МБ)",codeHint:"Введите этот код на экране компьютера",tooMany:"Слишком много заявок, попробуйте позже",pick:"Выбрать и продолжить",tf:"Тарифы",school:"Школьный (Комфорт)",bonus:"Бонус при пополнении",gift:"в подарок",pay:"Выберите тариф"});
+Object.assign(T.kk,{rcSent:"Чек операторға жіберілді",rcBig:"Файл тым үлкен (макс. 5 МБ)",codeHint:"Бұл кодты компьютер экранына енгізіңіз",tooMany:"Өтінім тым көп, кейінірек қайталаңыз",pick:"Таңдап, жалғастыру",tf:"Тарифтер",school:"Мектеп тарифі (Комфорт)",bonus:"Толықтыру бонусы",gift:"сыйға",pay:"Тарифті таңдаңыз"});
 const TL=[["hour","1 час","1 сағат",1],["p21","2+1","2+1",3],["p32","3+2","3+2",5],["morning","Утренний 08:00–13:00","Таңғы 08:00–13:00",5],["day","Дневной 13:00–19:00","Күндізгі 13:00–19:00",6],["night","Ночной 22:00–08:00","Түнгі 22:00–08:00",10]];
 function tariffList(z){const o=CONFIG.tariffs[z];return TL.filter(x=>o[x[0]]!=null).map(x=>({k:x[0],l:{ru:x[1],kk:x[2]},h:x[3],p:o[x[0]]}))}
 const money=n=>n.toLocaleString("ru")+" ₸";
@@ -338,7 +339,7 @@ async function sendReq(){const n=$("#rn").value.trim(),ph=$("#rp").value.trim();
 function dismissTrack(){MYREQ=null;REQ=null;try{localStorage.removeItem("ig_req")}catch(e){}SIG="";renderTrack()}
 function renderTrack(){const el=$("#track");if(!el)return;const r=REQ;
   if(!r){el.innerHTML="";return}
-  const m={new:`<div class="trk w">⏳ ${t("waitT")}</div>`,done:`<div class="trk o">✅ ${t("okT")}<br>${t("codeL")}: <b class="g" style="font-size:1.6rem">${r.code||""}</b></div>`,rejected:`<div class="trk b">❌ ${t("rejT")}</div>`};
+  const m={new:`<div class="trk w">⏳ ${t("waitT")}</div>`,done:`<div class="trk o">✅ ${t("okT")}<br>${t("codeL")}: <b class="g" style="font-size:1.6rem">${r.code||""}</b><br><span class="live">${t("codeHint")}</span></div>`,rejected:`<div class="trk b">❌ ${t("rejT")}</div>`};
   el.innerHTML=`<div class="trk h"><button class="x" aria-label="Close" onclick="dismissTrack()">×</button>PC ${String(r.pc).padStart(2,"0")} · ${r.tariff?zn(r.tariff):""}</div>`+(m[r.state]||"")}
 document.addEventListener("click",e=>{
   const l=e.target.closest("[data-l]");if(l){L=l.dataset.l;try{localStorage.setItem("lang",L)}catch(x){}closeM();SIG="";applyLang();return}
@@ -350,9 +351,15 @@ document.addEventListener("click",e=>{
   if(e.target.closest("[data-receipt]"))receipt(e);
   if(e.target==$("#modal"))closeM();
 });
-function receipt(e){e.preventDefault();try{if(MYREQ)sb("mark_receipt",{p_id:MYREQ.id,p_token:MYREQ.token}).catch(()=>{})}catch(z){}
-  const m=encodeURIComponent(t("msg")+(sel?t("forpc")+sel:"")+".");
+function openWa(){const m=encodeURIComponent(t("msg")+(sel?t("forpc")+sel:"")+".");
   window.open("https://wa.me/"+CONFIG.managerWhatsApp+"?text="+m,"_blank","noopener")}
+function receipt(e){e.preventDefault();if(MYREQ){$("#rcf").value="";$("#rcf").click();return}openWa()}
+async function rcUpload(f){if(!f||!MYREQ)return;if(f.size>5e6)return toast(t("rcBig"));
+  const ext=((f.name.split(".").pop()||"jpg").toLowerCase().replace(/[^a-z0-9]/g,"")||"jpg").slice(0,5),path=MYREQ.id+"/"+MYREQ.token+"-"+Date.now()+"."+ext,K=CONFIG.supabase.key;
+  try{const r=await fetch(CONFIG.supabase.url+"/storage/v1/object/receipts/"+path,{method:"POST",headers:{apikey:K,Authorization:"Bearer "+K,"Content-Type":f.type||"application/octet-stream"},body:f});
+    if(!r.ok)throw new Error(r.status);await sb("mark_receipt",{p_id:MYREQ.id,p_token:MYREQ.token,p_path:path});toast(t("rcSent"))}
+  catch(e){toast(t("err"));openWa()}}
+$("#rcf").addEventListener("change",e=>rcUpload(e.target.files[0]));
 document.addEventListener("keydown",e=>{if(e.key=="Escape")closeM();if(e.key=="Enter"&&e.target.classList&&e.target.classList.contains("pc")&&e.target.dataset.id)openPC(e.target.dataset.id)});
 document.documentElement.classList.add("js");
 const secs=document.querySelectorAll("section");secs.forEach(x=>x.classList.add("rvl"));
