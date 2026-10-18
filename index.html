@@ -188,7 +188,6 @@ nav .btn.nb{padding:7px 13px;font-size:.78rem;min-height:36px;border-radius:11px
 <footer data-i="foot"></footer>
 
 <div class="dock"><a class="btn p" href="#" data-book data-i="book"></a><a class="btn o" href="#" data-receipt data-i="rc"></a></div>
-<input type="file" id="rcf" accept="image/*,application/pdf" hidden>
 <div class="modal" id="modal"><div class="box glass" id="box"></div></div>
 <div class="toast" id="toast"></div>
 
@@ -324,8 +323,10 @@ function openPC(id){
 function closeM(){$("#modal").classList.remove("open");document.body.classList.remove("lock")}
 function pick(id){sel=id;const m=$("#mt");selT=m?m.value:null;render();book({preventDefault(){}})}
 function pay(e){e.preventDefault();
-  const a=document.createElement("a");a.href=CONFIG.kaspiLink;a.target="_blank";a.rel="noopener";document.body.appendChild(a);a.click();a.remove();
-  setTimeout(()=>{if(!document.hidden)window.open(CONFIG.kaspiFallback,"_blank","noopener")},1600)}
+  const ua=navigator.userAgent,fb=CONFIG.kaspiFallback;
+  if(/Android/i.test(ua)){location.href="intent://#Intent;package=kz.kaspi.mobile;S.browser_fallback_url="+encodeURIComponent(fb)+";end";return}
+  if(/iPhone|iPad|iPod/i.test(ua)){location.href=CONFIG.kaspiLink;setTimeout(()=>{if(!document.hidden)location.href=fb},1500);return}
+  window.open(fb,"_blank","noopener")}
 function book(e){e.preventDefault();
   if(!sel){toast(t("needPc"));return document.getElementById("computers").scrollIntoView()}
   $("#box").innerHTML=`<button class="x" aria-label="Close" onclick="closeM()">×</button><h2>${t("omwT")}</h2><p class="live">${t("pcL")}: <b class="g">PC ${String(sel).padStart(2,"0")} · ${zn(zoneOf(sel).name)}</b></p><details class="spkd" ${innerWidth>=700?"open":""}><summary>${t("zs")}</summary>${Object.entries({...zoneOf(sel).specs,...(CONFIG.specs[sel]||{})}).map(([k,v])=>`<div class="spec"><span>${t("sp")[k]||k}</span><b>${v}</b></div>`).join("")}</details><input id="rn" placeholder="${t("nameL")}" autocomplete="name"><input id="rp" type="tel" placeholder="${t("phoneL")}" autocomplete="tel"><div class="live" style="margin-top:12px">${t("pay")}</div><select id="rh">${tariffList(zoneOf(sel).id).map(x=>`<option value="${x.k}" ${x.k==selT?"selected":""}>${zn(x.l)} — ${money(x.p)}</option>`).join("")}</select><select id="re">${[5,10,15,20,30].map(n=>`<option value="${n}">${t("etaL")} ${n} ${t("min")}</option>`).join("")}</select><button class="btn p stk" style="width:100%;margin-top:14px" onclick="sendReq()">${t("send")}</button>`;
@@ -351,15 +352,10 @@ document.addEventListener("click",e=>{
   if(e.target.closest("[data-receipt]"))receipt(e);
   if(e.target==$("#modal"))closeM();
 });
-function openWa(){const m=encodeURIComponent(t("msg")+(sel?t("forpc")+sel:"")+".");
+function openWa(){const pcn=REQ?REQ.pc:sel;
+  const m=encodeURIComponent(t("msg")+(pcn?t("forpc")+pcn:"")+(REQ&&REQ.tariff?" ("+zn(REQ.tariff)+")":"")+(REQ&&REQ.code?", "+t("codeL").toLowerCase()+": "+REQ.code:"")+".");
   window.open("https://wa.me/"+CONFIG.managerWhatsApp+"?text="+m,"_blank","noopener")}
-function receipt(e){e.preventDefault();if(MYREQ){$("#rcf").value="";$("#rcf").click();return}openWa()}
-async function rcUpload(f){if(!f||!MYREQ)return;if(f.size>5e6)return toast(t("rcBig"));
-  const ext=((f.name.split(".").pop()||"jpg").toLowerCase().replace(/[^a-z0-9]/g,"")||"jpg").slice(0,5),path=MYREQ.id+"/"+MYREQ.token+"-"+Date.now()+"."+ext,K=CONFIG.supabase.key;
-  try{const r=await fetch(CONFIG.supabase.url+"/storage/v1/object/receipts/"+path,{method:"POST",headers:{apikey:K,Authorization:"Bearer "+K,"Content-Type":f.type||"application/octet-stream"},body:f});
-    if(!r.ok)throw new Error(r.status);await sb("mark_receipt",{p_id:MYREQ.id,p_token:MYREQ.token,p_path:path});toast(t("rcSent"))}
-  catch(e){toast(t("err"));openWa()}}
-$("#rcf").addEventListener("change",e=>rcUpload(e.target.files[0]));
+function receipt(e){e.preventDefault();try{if(MYREQ)sb("mark_receipt",{p_id:MYREQ.id,p_token:MYREQ.token}).catch(()=>{})}catch(z){}openWa()}
 document.addEventListener("keydown",e=>{if(e.key=="Escape")closeM();if(e.key=="Enter"&&e.target.classList&&e.target.classList.contains("pc")&&e.target.dataset.id)openPC(e.target.dataset.id)});
 document.documentElement.classList.add("js");
 const secs=document.querySelectorAll("section");secs.forEach(x=>x.classList.add("rvl"));
