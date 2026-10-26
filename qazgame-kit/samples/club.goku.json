@@ -1,0 +1,171 @@
+{
+  "name": "goku eSports",
+  "logo_top": "GOKU",
+  "logo_accent": "eSPORTS",
+  "city": {
+    "ru": "Актау",
+    "kk": "Ақтау"
+  },
+  "address": {
+    "ru": "ЖК Albion, 19-й микрорайон, 28, Актау",
+    "kk": "Albion т.к., 19-шағын аудан, 28, Ақтау"
+  },
+  "tagline": {
+    "ru": "крупный компьютерный клуб нового уровня в Актау",
+    "kk": "Ақтаудағы жаңа деңгейдегі ірі компьютерлік клуб"
+  },
+  "open24": true,
+  "phone": "+77075150388",
+  "phone_display": "+7 707 515 0388",
+  "whatsapp": "77075150388",
+  "instagram": "goku.aktau",
+  "twogis": {
+    "city": "aktau",
+    "id": "70000001100313314"
+  },
+  "rating": {
+    "value": "4.8",
+    "count": 721,
+    "reviews": 260
+  },
+  "colors": {
+    "brand": "#5DD62C",
+    "dark": "#337418",
+    "bg": "#0F0F0F",
+    "card": "#202020",
+    "text": "#F8F8F8"
+  },
+  "supabase": {
+    "url": "https://otxbyexdfjwnqxugwhxy.supabase.co",
+    "anon_key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im90eGJ5ZXhkZmp3bnF4dWd3aHh5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIxNDA4MjYsImV4cCI6MjEwNzcxNjgyNn0.6iQdJGXC3AUsr34bxlnkVSZzJN2d3MALlDtTIz-x7EQ"
+  },
+  "admin_email": "nbairambaev@gmail.com",
+  "powered_by": true,
+  "zones": [
+    {
+      "id": "comfort",
+      "count": 14,
+      "name": {
+        "ru": "Комфорт зона",
+        "kk": "Комфорт зона"
+      },
+      "specs": {
+        "CPU": "Intel Core i5 13400F",
+        "GPU": "RTX 4060",
+        "Monitor": "MSI",
+        "Refresh": "300 Hz",
+        "Keyboard": "AULA F75",
+        "Mouse": "Logitech G Pro Superlight",
+        "Headset": "HyperX Cloud 2",
+        "Chair": "DXRacer Prince",
+        "Pad": "SteelSeries QcK Heavy"
+      }
+    },
+    {
+      "id": "duo",
+      "count": 6,
+      "name": {
+        "ru": "Дуо зона",
+        "kk": "Дуо зона"
+      },
+      "specs": {
+        "CPU": "Ryzen 9800X3D",
+        "GPU": "RTX 5070 Ultra",
+        "Monitor": "Zowie",
+        "Refresh": "600 Hz",
+        "Keyboard": "Logitech TKL Rapid",
+        "Mouse": "Logitech Superstrike",
+        "Headset": "Logitech G Pro X2",
+        "Chair": "Andaseat Kaiser 3",
+        "Pad": "SteelSeries QcK Heavy"
+      }
+    },
+    {
+      "id": "vip",
+      "count": 4,
+      "name": {
+        "ru": "VIP зона",
+        "kk": "VIP зона"
+      },
+      "specs": {
+        "CPU": "Ryzen 7800X3D",
+        "GPU": "RTX 5060 Ti",
+        "Monitor": "Zowie",
+        "Refresh": "400 Hz",
+        "Keyboard": "AULA F75",
+        "Mouse": "Logitech G Pro Superlight 2",
+        "Headset": "HyperX Cloud Wireless",
+        "Chair": "DXRacer Hummer",
+        "Pad": "SteelSeries QcK Heavy"
+      }
+    }
+  ],
+  "tariffs": {
+    "comfort": {
+      "hour": 700,
+      "p21": 1600,
+      "p32": 2500,
+      "morning": 1600,
+      "day": 2000,
+      "night": 3000
+    },
+    "vip": {
+      "hour": 1500,
+      "p21": 3100,
+      "p32": 4600,
+      "morning": 3000,
+      "day": 4500,
+      "night": 5000
+    },
+    "duo": {
+      "hour": 2500,
+      "p21": 5100,
+      "p32": 7600,
+      "morning": 5000,
+      "day": 6000,
+      "night": 8000
+    }
+  },
+  "school": {
+    "zone": "comfort",
+    "label": {
+      "ru": "Школьный (Комфорт)",
+      "kk": "Мектеп тарифі (Комфорт)"
+    },
+    "hour": 500,
+    "p21": 1000,
+    "p32": 1500
+  },
+  "bonus": [
+    {
+      "pay": 5000,
+      "gift": 2000
+    },
+    {
+      "pay": 10000,
+      "gift": 5000
+    }
+  ],
+  "rules": {
+    "ru": [
+      "Не находиться в клубе в состоянии алкогольного и наркотического опьянения.",
+      "Соблюдать в зале тишину.",
+      "Не подключать периферийные устройства (мышь, наушники, клавиатуру, монитор) с одного компьютера на другой.",
+      "Не спать или находиться в компьютерном зале без оплаты рабочего времени за компьютером.",
+      "Не портить имущество клуба.",
+      "Строго запрещено курение сигарет в клубе. Электронные устройства разрешены.",
+      "Самостоятельно не скачивать из сети интернет или flash-накопителей любые файлы без предварительного согласования с администрацией.",
+      "Лица младше 18 лет не допускаются в клуб после 22:00."
+    ],
+    "kk": [
+      "Клубта алкогольдік және есірткілік масаю күйінде болуға болмайды.",
+      "Залда тыныштықты сақтаңыз.",
+      "Шеткі құрылғыларды (тышқан, құлаққап, пернетақта, монитор) бір компьютерден екіншісіне қосуға болмайды.",
+      "Компьютерде жұмыс уақытына төлемей ұйықтауға немесе компьютер залында болуға болмайды.",
+      "Клуб мүлкін бүлдірмеңіз.",
+      "Клубта темекі шегуге қатаң тыйым салынады. Электронды құрылғыларға рұқсат етіледі.",
+      "Әкімшілікпен алдын ала келіспей, интернеттен немесе flash-жинақтауыштан ешқандай файл жүктемеңіз.",
+      "18 жасқа толмағандарға сағат 22:00-ден кейін клубқа кіруге болмайды."
+    ]
+  }
+}
