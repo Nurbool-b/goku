@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="ru"><head><meta charset="utf-8">
-<meta name="description" content="goku eSports — компьютерный клуб в Актау. Онлайн-заявка на включение ПК, тарифы, зоны Comfort, Duo и VIP.">
+<meta name="description" content="goku eSports — компьютерный клуб, Актау. Онлайн-заявка на включение ПК, тарифы и правила клуба.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="GOKU">
 <meta name="theme-color" content="#0F0F0F"><meta name="color-scheme" content="dark">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>goku eSports — Компьютерлік клуб / Компьютерный клуб, Актау</title>
@@ -102,9 +106,9 @@ nav .btn.nb{padding:7px 13px;font-size:.78rem;min-height:36px;border-radius:11px
 
 <header><nav>
 <a href="#home" class="logo"><svg viewBox="0 0 48 24" width="38" height="19" aria-hidden="true"><defs><linearGradient id="lg" x1="0" x2="1"><stop offset="0" style="stop-color:var(--brand)"/><stop offset="1" style="stop-color:var(--brand2)"/></linearGradient></defs><path transform="translate(12 -1)" d="M13 2 4 14h7l-1 8 9-12h-7z" fill="url(#lg)"/></svg><span>GOKU <b>eSPORTS</b></span></a>
-<div class="links"><a href="#home" data-i="n1"></a><a href="#computers" data-i="n2"></a><a href="#booking" data-i="n3"></a><a href="#reviews" data-i="n4"></a><a href="#about" data-i="n5"></a><a href="#contacts" data-i="n6"></a></div>
+<div class="links"><a href="#home" data-i="n1"></a><a href="#computers" data-i="n2"></a><a href="#booking" data-i="n3"></a><a href="#promos" data-i="n7" id="nvp" hidden></a><a href="#reviews" data-i="n4"></a><a href="#about" data-i="n5"></a><a href="#contacts" data-i="n6"></a></div>
 <div class="lang"><button data-l="ru">РУС</button><button data-l="kk">ҚАЗ</button></div>
-<a href="#booking" class="btn p nb" data-book data-i="book"></a>
+<button class="btn" id="inst" hidden title="App" aria-label="Install app" style="padding:8px 11px;min-height:36px">📲</button><a href="#booking" class="btn p nb" data-book data-i="book"></a>
 </nav></header>
 
 <section id="home" class="hero">
@@ -145,6 +149,12 @@ nav .btn.nb{padding:7px 13px;font-size:.78rem;min-height:36px;border-radius:11px
 <p class="live" data-i="rcn"></p></div>
 </div>
 <div class="glass tf" id="tariffs"></div></section>
+
+<section id="promos" hidden>
+<h2 data-i="pr1"></h2>
+<p class="sub" data-i="pr2"></p>
+<div class="cards" id="promoList"></div>
+</section>
 
 <section id="reviews">
 <h2 data-i="r1"></h2>
@@ -193,37 +203,17 @@ nav .btn.nb{padding:7px 13px;font-size:.78rem;min-height:36px;border-radius:11px
 
 <script>
 /* ===== CONFIG: replace these values later ===== */
+const CLUB={"kaspi": {"link": "kaspi://", "fallback": "https://kaspi.kz/"}, "whatsapp": "77075150388", "supabase": {"url": "https://otxbyexdfjwnqxugwhxy.supabase.co", "anon_key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im90eGJ5ZXhkZmp3bnF4dWd3aHh5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIxNDA4MjYsImV4cCI6MjEwNzcxNjgyNn0.6iQdJGXC3AUsr34bxlnkVSZzJN2d3MALlDtTIz-x7EQ"}, "pcCount": 24, "tariffs": {"comfort": {"hour": 700, "p21": 1600, "p32": 2500, "morning": 1600, "day": 2000, "night": 3000}, "vip": {"hour": 1500, "p21": 3100, "p32": 4600, "morning": 3000, "day": 4500, "night": 5000}, "duo": {"hour": 2500, "p21": 5100, "p32": 7600, "morning": 5000, "day": 6000, "night": 8000}}, "school": {"zone": "comfort", "label": {"ru": "Школьный (Комфорт)", "kk": "Мектеп тарифі (Комфорт)"}, "hour": 500, "p21": 1000, "p32": 1500}, "bonus": [{"pay": 5000, "gift": 2000}, {"pay": 10000, "gift": 5000}], "zones": [{"id": "comfort", "count": 14, "name": {"ru": "Комфорт зона", "kk": "Комфорт зона"}, "specs": {"CPU": "Intel Core i5 13400F", "GPU": "RTX 4060", "Monitor": "MSI", "Refresh": "300 Hz", "Keyboard": "AULA F75", "Mouse": "Logitech G Pro Superlight", "Headset": "HyperX Cloud 2", "Chair": "DXRacer Prince", "Pad": "SteelSeries QcK Heavy"}}, {"id": "duo", "count": 6, "name": {"ru": "Дуо зона", "kk": "Дуо зона"}, "specs": {"CPU": "Ryzen 9800X3D", "GPU": "RTX 5070 Ultra", "Monitor": "Zowie", "Refresh": "600 Hz", "Keyboard": "Logitech TKL Rapid", "Mouse": "Logitech Superstrike", "Headset": "Logitech G Pro X2", "Chair": "Andaseat Kaiser 3", "Pad": "SteelSeries QcK Heavy"}}, {"id": "vip", "count": 4, "name": {"ru": "VIP зона", "kk": "VIP зона"}, "specs": {"CPU": "Ryzen 7800X3D", "GPU": "RTX 5060 Ti", "Monitor": "Zowie", "Refresh": "400 Hz", "Keyboard": "AULA F75", "Mouse": "Logitech G Pro Superlight 2", "Headset": "HyperX Cloud Wireless", "Chair": "DXRacer Hummer", "Pad": "SteelSeries QcK Heavy"}}], "reviews_url": "https://2gis.kz/aktau/firm/70000001100313314/tab/reviews", "rules": {"ru": ["Не находиться в клубе в состоянии алкогольного и наркотического опьянения.", "Соблюдать в зале тишину.", "Не подключать периферийные устройства (мышь, наушники, клавиатуру, монитор) с одного компьютера на другой.", "Не спать или находиться в компьютерном зале без оплаты рабочего времени за компьютером.", "Не портить имущество клуба.", "Строго запрещено курение сигарет в клубе. Электронные устройства разрешены.", "Самостоятельно не скачивать из сети интернет или flash-накопителей любые файлы без предварительного согласования с администрацией.", "Лица младше 18 лет не допускаются в клуб после 22:00."], "kk": ["Клубта алкогольдік және есірткілік масаю күйінде болуға болмайды.", "Залда тыныштықты сақтаңыз.", "Шеткі құрылғыларды (тышқан, құлаққап, пернетақта, монитор) бір компьютерден екіншісіне қосуға болмайды.", "Компьютерде жұмыс уақытына төлемей ұйықтауға немесе компьютер залында болуға болмайды.", "Клуб мүлкін бүлдірмеңіз.", "Клубта темекі шегуге қатаң тыйым салынады. Электронды құрылғыларға рұқсат етіледі.", "Әкімшілікпен алдын ала келіспей, интернеттен немесе flash-жинақтауыштан ешқандай файл жүктемеңіз.", "18 жасқа толмағандарға сағат 22:00-ден кейін клубқа кіруге болмайды."]}, "rulesNote": {"ru": "С уважением, администрация", "kk": "Құрметпен, әкімшілік"}, "tariffDefs": [["hour", "1 час", "1 сағат", 1], ["p21", "2+1", "2+1", 3], ["p32", "3+2", "3+2", 5], ["morning", "Утренний 08:00–13:00", "Таңғы 08:00–13:00", 5], ["day", "Дневной 13:00–19:00", "Күндізгі 13:00–19:00", 6], ["night", "Ночной 22:00–08:00", "Түнгі 22:00–08:00", 10]]};
 const CONFIG={
-  kaspiLink:"kaspi://",kaspiFallback:"https://kaspi.kz/",   // opens the Kaspi app main screen; website if the app does not open
-  managerWhatsApp:"77075150388",      // TODO: manager number for receipts (digits only)
-  // TODO: connect real availability. Return [{id, status:'available'|'occupied'|'booked'}]
-  supabase:{url:"https://otxbyexdfjwnqxugwhxy.supabase.co",key:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im90eGJ5ZXhkZmp3bnF4dWd3aHh5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIxNDA4MjYsImV4cCI6MjEwNzcxNjgyNn0.6iQdJGXC3AUsr34bxlnkVSZzJN2d3MALlDtTIz-x7EQ"},
+  kaspiLink:CLUB.kaspi.link,kaspiFallback:CLUB.kaspi.fallback,
+  managerWhatsApp:CLUB.whatsapp,
+  supabase:{url:CLUB.supabase.url,key:CLUB.supabase.anon_key},
   async fetchAvailability(){ return sb("public_pcs"); },
   refreshMs:4000,
-  // TODO: real specs. Per-PC override: specs[id]. Keys: CPU,GPU,RAM,Monitor,Refresh,Keyboard,Mouse,Headset,Other
-  defaultSpecs:{},
-  specs:{},
-  pcCount:24,
-  tariffs:{
-    comfort:{hour:700,p21:1600,p32:2500,morning:1600,day:2000,night:3000},
-    vip:{hour:1500,p21:3100,p32:4600,morning:3000,day:4500,night:5000},
-    duo:{hour:2500,p21:5100,p32:7600,morning:5000,day:6000,night:8000}},
-  school:{hour:500,p21:1000,p32:1500},          // "Школьный", Comfort zone (conditions not specified in the source)
-  bonus:[{pay:5000,gift:2000},{pay:10000,gift:5000}],
-  // TODO: confirm real PC count per zone (must add up to pcCount). Specs are from the club Instagram stories ("Железо").
-  zones:[
-    {id:"comfort",count:14,name:{ru:"Комфорт зона",kk:"Комфорт зона"},specs:{CPU:"Intel Core i5 13400F",GPU:"RTX 4060",Monitor:"MSI",Refresh:"300 Hz",Keyboard:"AULA F75",Mouse:"Logitech G Pro Superlight",Headset:"HyperX Cloud 2",Chair:"DXRacer Prince",Pad:"SteelSeries QcK Heavy"}},
-    {id:"duo",count:6,name:{ru:"Дуо зона",kk:"Дуо зона"},specs:{CPU:"Ryzen 9800X3D",GPU:"RTX 5070 Ultra",Monitor:"Zowie",Refresh:"600 Hz",Keyboard:"Logitech TKL Rapid",Mouse:"Logitech Superstrike",Headset:"Logitech G Pro X2",Chair:"Andaseat Kaiser 3",Pad:"SteelSeries QcK Heavy"}},
-    {id:"vip",count:4,name:{ru:"VIP зона",kk:"VIP зона"},specs:{CPU:"Ryzen 7800X3D",GPU:"RTX 5060 Ti",Monitor:"Zowie",Refresh:"400 Hz",Keyboard:"AULA F75",Mouse:"Logitech G Pro Superlight 2",Headset:"HyperX Cloud Wireless",Chair:"DXRacer Hummer",Pad:"SteelSeries QcK Heavy"}}
-  ],
-  // Real reviews only: {name:"", rating:5, text:"", date:""}
-  reviews:[],
-  reviewsUrl:"https://2gis.kz/aktau/firm/70000001100313314/tab/reviews",
-  // TODO: rules per language
-  rules:{
-    ru:["Не находиться в клубе в состоянии алкогольного и наркотического опьянения.","Соблюдать в зале тишину.","Не подключать периферийные устройства (мышь, наушники, клавиатуру, монитор) с одного компьютера на другой.","Не спать или находиться в компьютерном зале без оплаты рабочего времени за компьютером.","Не портить имущество клуба.","Строго запрещено курение сигарет в клубе. Электронные устройства разрешены.","Самостоятельно не скачивать из сети интернет или flash-накопителей любые файлы без предварительного согласования с администрацией.","Лица младше 18 лет не допускаются в клуб после 22:00."],
-    kk:["Клубта алкогольдік және есірткілік масаю күйінде болуға болмайды.","Залда тыныштықты сақтаңыз.","Шеткі құрылғыларды (тышқан, құлаққап, пернетақта, монитор) бір компьютерден екіншісіне қосуға болмайды.","Компьютерде жұмыс уақытына төлемей ұйықтауға немесе компьютер залында болуға болмайды.","Клуб мүлкін бүлдірмеңіз.","Клубта темекі шегуге қатаң тыйым салынады. Электронды құрылғыларға рұқсат етіледі.","Әкімшілікпен алдын ала келіспей, интернеттен немесе flash-жинақтауыштан ешқандай файл жүктемеңіз.","18 жасқа толмағандарға сағат 22:00-ден кейін клубқа кіруге болмайды."]},
-  rulesNote:{ru:"С уважением, администрация",kk:"Құрметпен, әкімшілік"}
+  pcCount:CLUB.pcCount,specs:{},
+  tariffs:CLUB.tariffs,school:CLUB.school,bonus:CLUB.bonus,zones:CLUB.zones,
+  reviews:[],reviewsUrl:CLUB.reviews_url,
+  rules:CLUB.rules,rulesNote:CLUB.rulesNote
 };
 /* ===== TRANSLATIONS ===== */
 const T={
@@ -234,14 +224,14 @@ c1:'Наличие компьютеров <span class="g">в реальном в
 all:"Все",available:"Свободен",occupied:"Занят",booked:"Забронирован",upd:"Обновлено:",basic:"Игровой компьютер",specs:"Характеристики",
 b1:'Бронь за <span class="g">3 простых шага</span>',b2:"Без очереди и без оператора.",st1:"Выберите свободный компьютер выше.",st2:"Нажмите «Забронировать» и оплатите в Kaspi.",st3:"Нажмите «Отправить чек» и пришлите чек менеджеру.",
 sel:"Выбран:",none:"нет",kaspi:"💳 Забронировать (Kaspi)",rc:"🧾 Отправить чек",rcn:"Отправьте чек менеджеру в WhatsApp, чтобы бронь была подтверждена.",
-r1:'Отзывы <span class="g">игроков</span>',r2:"Рейтинг 4,8 в 2GIS: 721 оценка и 260 отзывов.",r3:"Что игроки говорят об goku eSports — читайте в 2GIS.",r4:"Смотреть 260 отзывов в 2GIS →",
-a1:'О клубе <span class="g">goku eSports</span>',a2:"Крупный компьютерный клуб нового уровня в Актау: ЖК Albion, 19-й микрорайон, 28. Работает круглосуточно.",
-a3:"Бронь без оператора",a3p:"Выбери место, оплати, отправь чек.",a4:"Крупный клуб",a4p:"Крупный компьютерный клуб нового уровня в городе.",a5p:"Работаем круглосуточно.",a6:"Оборудование",a6p:"Характеристики каждого ПК — в карточке компьютера.",
+r1:'Отзывы <span class="g">игроков</span>',r2:"Рейтинг 4,8 в 2GIS · оценок: 721 · отзывов: 260.",r3:"Что игроки говорят о goku eSports — читайте в 2GIS.",r4:"Смотреть 260 отзывов в 2GIS →",
+a1:'О клубе <span class="g">goku eSports</span>',a2:"Крупный компьютерный клуб нового уровня в Актау — ЖК Albion, 19-й микрорайон, 28, Актау. Открыто круглосуточно.",
+a3:"Бронь без оператора",a3p:"Выбери место, оплати, отправь чек.",a4:"Наш клуб",a4p:"Крупный компьютерный клуб нового уровня в Актау.",a5p:"Открыто круглосуточно.",a6:"Оборудование",a6p:"Характеристики каждого ПК — в карточке компьютера.",
 ru:'Правила <span class="g">клуба</span>',faq:"Вопросы и ответы",
 q1:"Как забронировать без оператора?",a_1:"Выберите зелёный компьютер, нажмите «Забронировать», оплатите в Kaspi и отправьте чек менеджеру.",
-q2:"Что значат цвета?",a_2:"Зелёный — свободен, красный — занят, оранжевый — уже забронирован.",q3:"Какой график работы?",a_3:"goku eSports работает круглосуточно.",q4:"Где находится клуб?",a_4:"ЖК Albion, 19-й микрорайон, 28, Актау.",
+q2:"Что значат цвета?",a_2:"Зелёный — свободен, красный — занят, оранжевый — уже забронирован.",q3:"Какой график работы?",a_3:"goku eSports: Открыто круглосуточно.",q4:"Где находится клуб?",a_4:"ЖК Albion, 19-й микрорайон, 28, Актау.",
 k1:'Адрес и <span class="g">контакты</span>',k2:"Адрес",k2p:"ЖК Albion, 19-й микрорайон, 28, Актау",k2l:"Открыть в 2GIS →",k3:"Время работы",k3p:"Круглосуточно, 24/7",k4:"Телефон",
-f1:'Твоё место <span class="g">ждёт</span>',f2:"Забронируй компьютер меньше чем за минуту.",foot:"© goku eSports · Актау",
+f1:'Твоё место <span class="g">ждёт</span>',f2:"Забронируй компьютер меньше чем за минуту.",foot:"© goku eSports · Актау · Powered by QAZGAME",
 pick:"Выбрать этот компьютер",na:"Этот компьютер сейчас недоступен.",picked:"Выбран ПК ",needPc:"Сначала выберите свободный компьютер",noKaspi:"Ссылка Kaspi пока не добавлена",err:"Не удалось обновить наличие",
 msg:"Здравствуйте! Отправляю чек об оплате",forpc:" за ПК ",
 sp:{CPU:"Процессор",GPU:"Видеокарта",RAM:"Память",Monitor:"Монитор",Refresh:"Частота",Keyboard:"Клавиатура",Mouse:"Мышь",Headset:"Гарнитура",Other:"Прочее"}},
@@ -252,14 +242,14 @@ c1:'Компьютерлердің <span class="g">нақты уақыттағы
 all:"Барлығы",available:"Бос",occupied:"Бос емес",booked:"Брондалған",upd:"Жаңартылды:",basic:"Ойын компьютері",specs:"Сипаттамасы",
 b1:'<span class="g">3 қарапайым қадаммен</span> брондаңыз',b2:"Кезексіз, операторсыз.",st1:"Жоғарыдан бос компьютерді таңдаңыз.",st2:"«Брондау» түймесін басып, Kaspi арқылы төлеңіз.",st3:"«Чекті жіберу» түймесін басып, чекті менеджерге жіберіңіз.",
 sel:"Таңдалған:",none:"жоқ",kaspi:"💳 Брондау (Kaspi)",rc:"🧾 Чекті жіберу",rcn:"Бронь расталуы үшін чекті менеджерге WhatsApp арқылы жіберіңіз.",
-r1:'Ойыншылардың <span class="g">пікірлері</span>',r2:"2GIS-те рейтинг 4,8: 721 баға және 260 пікір.",r3:"Ойыншылар goku eSports туралы не дейді — 2GIS-те оқыңыз.",r4:"2GIS-те 260 пікірді көру →",
-a1:'<span class="g">goku eSports</span> туралы',a2:"Ақтаудағы жаңа деңгейдегі ірі компьютерлік клуб: Albion тұрғын кешені, 19-шағын аудан, 28. Тәулік бойы жұмыс істейді.",
-a3:"Операторсыз брондау",a3p:"Орын таңда, төле, чек жібер.",a4:"Ірі клуб",a4p:"Қаладағы жаңа деңгейдегі ірі компьютерлік клуб.",a5p:"Тәулік бойы жұмыс істейміз.",a6:"Жабдықтар",a6p:"Әр ДК сипаттамасы компьютер карточкасында.",
+r1:'Ойыншылардың <span class="g">пікірлері</span>',r2:"2GIS-те рейтинг 4,8 · бағалар: 721 · пікірлер: 260.",r3:"Ойыншылар goku eSports туралы не дейді — 2GIS-те оқыңыз.",r4:"2GIS-те 260 пікірді көру →",
+a1:'<span class="g">goku eSports</span> туралы',a2:"Ақтаудағы жаңа деңгейдегі ірі компьютерлік клуб — Albion т.к., 19-шағын аудан, 28, Ақтау. Тәулік бойы ашық.",
+a3:"Операторсыз брондау",a3p:"Орын таңда, төле, чек жібер.",a4:"Біздің клуб",a4p:"Ақтаудағы жаңа деңгейдегі ірі компьютерлік клуб.",a5p:"Тәулік бойы ашық.",a6:"Жабдықтар",a6p:"Әр ДК сипаттамасы компьютер карточкасында.",
 ru:'Клуб <span class="g">ережелері</span>',faq:"Жиі қойылатын сұрақтар",
 q1:"Операторсыз қалай брондаймын?",a_1:"Жасыл компьютерді таңдап, «Брондау» түймесін басыңыз, Kaspi арқылы төлеп, чекті менеджерге жіберіңіз.",
-q2:"Түстер нені білдіреді?",a_2:"Жасыл — бос, қызыл — бос емес, қызғылт сары — брондалған.",q3:"Жұмыс уақыты қандай?",a_3:"goku eSports тәулік бойы жұмыс істейді.",q4:"Клуб қайда орналасқан?",a_4:"Albion тұрғын кешені, 19-шағын аудан, 28, Ақтау.",
+q2:"Түстер нені білдіреді?",a_2:"Жасыл — бос, қызыл — бос емес, қызғылт сары — брондалған.",q3:"Жұмыс уақыты қандай?",a_3:"goku eSports: Тәулік бойы ашық.",q4:"Клуб қайда орналасқан?",a_4:"Albion т.к., 19-шағын аудан, 28, Ақтау.",
 k1:'Мекенжай және <span class="g">байланыс</span>',k2:"Мекенжай",k2p:"Albion т.к., 19-шағын аудан, 28, Ақтау",k2l:"2GIS-те ашу →",k3:"Жұмыс уақыты",k3p:"Тәулік бойы, 24/7",k4:"Телефон",
-f1:'Орның <span class="g">күтіп тұр</span>',f2:"Компьютерді бір минуттан аз уақытта брондаңыз.",foot:"© goku eSports · Ақтау",
+f1:'Орның <span class="g">күтіп тұр</span>',f2:"Компьютерді бір минуттан аз уақытта брондаңыз.",foot:"© goku eSports · Ақтау · Powered by QAZGAME",
 pick:"Осы компьютерді таңдау",na:"Бұл компьютер қазір қолжетімсіз.",picked:"ДК таңдалды: ",needPc:"Алдымен бос компьютерді таңдаңыз",noKaspi:"Kaspi сілтемесі әлі қосылмаған",err:"Күйді жаңарту мүмкін болмады",
 msg:"Сәлеметсіз бе! Төлем чегін жіберіп отырмын",forpc:", ДК ",
 sp:{CPU:"Процессор",GPU:"Бейнекарта",RAM:"Жад",Monitor:"Монитор",Refresh:"Жиілік",Keyboard:"Пернетақта",Mouse:"Тышқан",Headset:"Гарнитура",Other:"Басқа"}}
@@ -267,15 +257,16 @@ sp:{CPU:"Процессор",GPU:"Бейнекарта",RAM:"Жад",Monitor:"М
 Object.assign(T.ru,{book:"Я иду — включите ПК",bookb:"⚡ Я иду — включить ПК",kaspi:"💳 Оплатить через Kaspi",h1:'Включи ПК онлайн.<br><span class="g">Ещё по дороге в клуб.</span>',hp:"goku eSports — крупный компьютерный клуб нового уровня в Актау. Выбери свободный ПК, нажми «Я иду» — оператор включит его к твоему приходу.",b2:"Без очереди и без звонков.",st1:"Выберите свободный компьютер выше.",st2:"Нажмите «Я иду» — заявка уйдёт оператору, он включит ПК.",st3:"Получите код и оплатите через Kaspi (чек отправьте менеджеру).",a3:"Заявка онлайн",a3p:"Выбери ПК и отправь заявку по дороге.",q1:"Как включить ПК заранее?",a_1:"Выберите зелёный компьютер и нажмите «Я иду». Оператор подтвердит заявку и включит ПК, вам придёт код для входа.",omwT:"Я иду в клуб",pcL:"Компьютер",etaL:"Приду через",min:"мин",send:"Отправить заявку",sentT:"Заявка отправлена оператору",waitT:"Ждём подтверждения оператора…",okT:"Оператор подтвердил! ПК включается.",codeL:"Ваш код для входа",rejT:"Заявка отклонена оператором. Позвоните в клуб.",nameL:"Ваше имя",phoneL:"Телефон",hoursL:"Часов",needName:"Введите имя и телефон",taken:"Этот ПК уже занят",adminClose:"← К сайту",adminHint:"Демо-режим · PIN: 0000"});
 Object.assign(T.kk,{book:"Мен жолдамын — ДК қосыңыз",bookb:"⚡ Мен жолдамын — ДК қосу",kaspi:"💳 Kaspi арқылы төлеу",h1:'ДК-ны онлайн қос.<br><span class="g">Клубқа бара жатқанда.</span>',hp:"goku eSports — Ақтаудағы жаңа деңгейдегі ірі компьютерлік клуб. Бос ДК таңда, «Мен жолдамын» бас — оператор сен келгенше қосып қояды.",b2:"Кезексіз, қоңыраусыз.",st1:"Жоғарыдан бос компьютерді таңдаңыз.",st2:"«Мен жолдамын» түймесін басыңыз — өтінім операторға түседі, ол ДК-ны қосады.",st3:"Кодты алыңыз да, Kaspi арқылы төлеңіз (чекті менеджерге жіберіңіз).",a3:"Онлайн өтінім",a3p:"ДК таңдап, жолда өтінім жібер.",q1:"ДК-ны алдын ала қалай қосамын?",a_1:"Жасыл компьютерді таңдап, «Мен жолдамын» түймесін басыңыз. Оператор өтінімді растап, ДК-ны қосады, сізге кіру коды келеді.",omwT:"Мен клубқа бара жатырмын",pcL:"Компьютер",etaL:"Келемін",min:"мин",send:"Өтінімді жіберу",sentT:"Өтінім операторға жіберілді",waitT:"Оператор растауын күтеміз…",okT:"Оператор растады! ДК қосылуда.",codeL:"Кіру коды",rejT:"Оператор өтінімді қабылдамады. Клубқа қоңырау шалыңыз.",nameL:"Атыңыз",phoneL:"Телефон",hoursL:"Сағат",needName:"Аты мен телефонды енгізіңіз",taken:"Бұл ДК бос емес",adminClose:"← Сайтқа",adminHint:"Демо режим · PIN: 0000"});
 Object.assign(T.ru,{zs:"Характеристики зоны"});Object.assign(T.ru.sp,{Chair:"Кресло",Pad:"Коврик"});Object.assign(T.kk.sp,{Chair:"Кресло",Pad:"Тышқан кілемшесі"});Object.assign(T.kk,{zs:"Аймақ сипаттамасы"});
-Object.assign(T.ru,{sumL:"сумма",rcSent:"Чек отправлен оператору",rcBig:"Файл слишком большой (макс. 5 МБ)",codeHint:"Введите этот код на экране компьютера",tooMany:"Слишком много заявок, попробуйте позже",pick:"Выбрать и продолжить",tf:"Тарифы",school:"Школьный (Комфорт)",bonus:"Бонус при пополнении",gift:"в подарок",pay:"Выберите тариф"});
-Object.assign(T.kk,{sumL:"сома",rcSent:"Чек операторға жіберілді",rcBig:"Файл тым үлкен (макс. 5 МБ)",codeHint:"Бұл кодты компьютер экранына енгізіңіз",tooMany:"Өтінім тым көп, кейінірек қайталаңыз",pick:"Таңдап, жалғастыру",tf:"Тарифтер",school:"Мектеп тарифі (Комфорт)",bonus:"Толықтыру бонусы",gift:"сыйға",pay:"Тарифті таңдаңыз"});
-const TL=[["hour","1 час","1 сағат",1],["p21","2+1","2+1",3],["p32","3+2","3+2",5],["morning","Утренний 08:00–13:00","Таңғы 08:00–13:00",5],["day","Дневной 13:00–19:00","Күндізгі 13:00–19:00",6],["night","Ночной 22:00–08:00","Түнгі 22:00–08:00",10]];
+Object.assign(T.ru,{n7:"Акции",pr1:'<span class="g">Акции</span> клуба',pr2:"Актуальные предложения.",iosHint:"Нажмите «Поделиться» → «На экран Домой»",sumL:"сумма",rcSent:"Чек отправлен оператору",rcBig:"Файл слишком большой (макс. 5 МБ)",codeHint:"Введите этот код на экране компьютера",tooMany:"Слишком много заявок, попробуйте позже",pick:"Выбрать и продолжить",tf:"Тарифы",school:"Школьный (Комфорт)",bonus:"Бонус при пополнении",gift:"в подарок",pay:"Выберите тариф"});
+Object.assign(T.kk,{n7:"Акциялар",pr1:'Клуб <span class="g">акциялары</span>',pr2:"Өзекті ұсыныстар.",iosHint:"«Бөлісу» → «Басты экранға қосу» басыңыз",sumL:"сома",rcSent:"Чек операторға жіберілді",rcBig:"Файл тым үлкен (макс. 5 МБ)",codeHint:"Бұл кодты компьютер экранына енгізіңіз",tooMany:"Өтінім тым көп, кейінірек қайталаңыз",pick:"Таңдап, жалғастыру",tf:"Тарифтер",school:"Мектеп тарифі (Комфорт)",bonus:"Толықтыру бонусы",gift:"сыйға",pay:"Тарифті таңдаңыз"});
+const TL=CLUB.tariffDefs;
 function tariffList(z){const o=CONFIG.tariffs[z];return TL.filter(x=>o[x[0]]!=null).map(x=>({k:x[0],l:{ru:x[1],kk:x[2]},h:x[3],p:o[x[0]]}))}
 const money=n=>n.toLocaleString("ru")+" ₸";
 function renderTariffs(){const el=$("#tariffs");if(!el)return;const tl=tariffList(zone),sc=CONFIG.school;
   const row=(a,b)=>`<div class="tr"><span>${a}</span><b>${b}</b></div>`;
-  el.innerHTML=`<h3 style="margin-bottom:10px">${t("tf")}</h3><div class="bar">${CONFIG.zones.map(z=>`<span class="chip ${zone==z.id?"on":""}" data-z="${z.id}">${zn(z.name)}</span>`).join("")}</div>${tl.map(x=>row(zn(x.l),money(x.p))).join("")}${zone=="comfort"&&sc?`<h3 style="margin:18px 0 4px;font-size:1rem">${t("school")}</h3>${[["hour","1 час","1 сағат"],["p21","2+1","2+1"],["p32","3+2","3+2"]].map(x=>row(L=="kk"?x[2]:x[1],money(sc[x[0]]))).join("")}`:""}<div class="bn">🎁 <b>${t("bonus")}:</b> ${CONFIG.bonus.map(b=>`${money(b.pay)} → +${money(b.gift)} ${t("gift")}`).join(" · ")}</div>`}
-let zone="comfort",selT=null;const zn=o=>o[L]||o.ru;
+  el.innerHTML=`<h3 style="margin-bottom:10px">${t("tf")}</h3><div class="bar">${CONFIG.zones.map(z=>`<span class="chip ${zone==z.id?"on":""}" data-z="${z.id}">${zn(z.name)}</span>`).join("")}</div>${tl.map(x=>row(zn(x.l),money(x.p))).join("")}${sc&&zone==sc.zone?`<h3 style="margin:18px 0 4px;font-size:1rem">${zn(sc.label)}</h3>${[["hour","1 час","1 сағат"],["p21","2+1","2+1"],["p32","3+2","3+2"]].map(x=>row(L=="kk"?x[2]:x[1],money(sc[x[0]]))).join("")}`:""}<div class="bn">🎁 <b>${t("bonus")}:</b> ${CONFIG.bonus.map(b=>`${money(b.pay)} → +${money(b.gift)} ${t("gift")}`).join(" · ")}</div>`}
+let zone=CONFIG.zones[0].id,selT=null,PROMOS=[];
+const escH=x=>String(x==null?"":x).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));const zn=o=>o[L]||o.ru;
 function zoneOf(id){let n=0;for(const z of CONFIG.zones){n+=z.count;if(id<=n)return z}return CONFIG.zones[CONFIG.zones.length-1]}
 async function sb(fn,body){const r=await fetch(CONFIG.supabase.url+"/rest/v1/rpc/"+fn,{method:"POST",headers:{apikey:CONFIG.supabase.key,Authorization:"Bearer "+CONFIG.supabase.key,"Content-Type":"application/json"},body:JSON.stringify(body||{})});
   if(!r.ok){let m="";try{m=(await r.json()).message||""}catch(e){}throw new Error(m||r.status)}
@@ -288,7 +279,7 @@ const t=k=>T[L][k];
 const DEMO_STATUS=Array.from({length:CONFIG.pcCount},(_,i)=>({id:i+1,status:["available","available","occupied","booked","available","occupied"][i%6]}));
 let data=[],filter="all",sel=null;
 const $=s=>document.querySelector(s);
-function toast(x){const e=$("#toast");e.textContent=x;e.style.display="block";setTimeout(()=>e.style.display="none",2800)}
+function toast(x,ms){const e=$("#toast");e.textContent=x;e.style.display="block";setTimeout(()=>e.style.display="none",ms||2800)}
 function render(){
   const zd=data.filter(p=>zoneOf(p.id).id==zone),zc=CONFIG.zones.find(x=>x.id==zone);
   renderTariffs();
@@ -298,7 +289,7 @@ function render(){
   $("#grid").innerHTML=data.filter(p=>(filter=="all"||p.status==filter)&&zoneOf(p.id).id==zone).map(p=>`<div class="pc glass ${p.status} ${sel==p.id?"sel":""}" data-id="${p.id}" tabindex="0" role="button"><div class="n">PC ${String(p.id).padStart(2,"0")}</div><div class="st"><i class="dot"></i>${t(p.status)}</div><small>${zn(zoneOf(p.id).name)}</small><div class="sp">${t("specs")}</div></div>`).join("");
   $("#mini").innerHTML=data.map(p=>`<i class="m ${p.status}" title="PC ${p.id}"></i>`).join("");
   $("#stFree").textContent=data.filter(p=>p.status=="available").length;
-  renderTrack();
+  renderTrack();renderPromos();
   $("#selTxt").textContent=sel?"PC "+String(sel).padStart(2,"0")+" · "+zn(zoneOf(sel).name):t("none");
   const r=CONFIG.reviews;
   $("#rv").innerHTML=r.length?r.map(x=>`<div class="glass rv"><div class="stars">${"★".repeat(x.rating)}</div><p>${x.text}</p><small class="live">${x.name} · ${x.date||""}</small></div>`).join(""):`<div class="glass empty" style="grid-column:1/-1">${t("r3")}<br><br><a class="btn p" target="_blank" rel="noopener" href="${CONFIG.reviewsUrl}">${t("r4")}</a></div>`;
@@ -362,5 +353,15 @@ const secs=document.querySelectorAll("section");secs.forEach(x=>x.classList.add(
 if("IntersectionObserver" in window){const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.target.classList.add("in");io.unobserve(x.target)}}),{threshold:.05});secs.forEach(x=>io.observe(x))}else secs.forEach(x=>x.classList.add("in"));
 (function(){const h=$("#bgfx"),N=innerWidth<700?10:22,r=(a,b)=>a+Math.random()*(b-a);
   for(let i=0;i<N;i++){const e=document.createElement("i"),z=r(6,18);e.className="pt";e.style.cssText=`left:${r(0,100)}%;top:100%;width:${z}px;height:${z}px;--x:${r(-80,80)}px;--f:${r(22,48)}s;animation-delay:-${r(0,48)}s`;h.appendChild(e)}})();
+async function loadPromos(){try{PROMOS=(await sb("public_promos"))||[];renderPromos()}catch(e){}}
+function renderPromos(){const sec=$("#promos"),nv=$("#nvp");if(!sec)return;const has=PROMOS.length>0;sec.hidden=!has;if(nv)nv.hidden=!has;
+  $("#promoList").innerHTML=PROMOS.map(p=>`<div class="glass pr"><h3>🎁 ${escH((p.title&&(p.title[L]||p.title.ru))||"")}</h3><p>${escH((p.body&&(p.body[L]||p.body.ru))||"")}</p></div>`).join("")}
+/* ===== PWA: install as an app ===== */
+let DP=null;const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent),standalone=(window.matchMedia&&matchMedia("(display-mode: standalone)").matches)||navigator.standalone;
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();DP=e;$("#inst").hidden=false});
+if(isIOS&&!standalone)$("#inst").hidden=false;
+$("#inst").onclick=async()=>{if(DP){DP.prompt();try{await DP.userChoice}catch(x){}DP=null;$("#inst").hidden=true}else toast(t("iosHint"),6000)};
+if("serviceWorker" in navigator&&/^https?:/.test(location.protocol))navigator.serviceWorker.register("sw.js").catch(()=>{});
 applyLang();load();setInterval(()=>{if(!document.hidden)load()},CONFIG.refreshMs);
+loadPromos();setInterval(()=>{if(!document.hidden)loadPromos()},60000);
 </script></body></html>
